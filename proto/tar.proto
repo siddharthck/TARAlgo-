@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package tar;
+
+service TARService {
+  rpc RouteTask(RouteTaskRequest) returns (RouteTaskResponse);
+  rpc AcknowledgeTask(TaskAck) returns (TaskAck);
+  rpc Heartbeat(ServerMetrics) returns (ServerMetrics);
+  rpc RequestTaskTransfer(ServerMetrics) returns (Task);
+}
+
+message Task {
+  string id = 1;
+  string payload = 2;
+  Priority priority = 3;
+  int64 timestamp = 4; // Task creation time
+  int64 deadline = 5;  // Optional deadline for the task
+}
+
+message RouteTaskRequest {
+  Task task = 1;
+  ServerMetrics requester_metrics = 2;
+}
+
+message RouteTaskResponse {
+  repeated string target_servers = 1;
+  bool is_coordinator = 2;
+}
+
+message TaskAck {
+  string task_id = 1;
+  string server_id = 2;
+  bool success = 3;
+}
+
+message ServerMetrics {
+  string server_id = 1;
+  float cpu_utilization = 2;
+  int32 queue_length = 3;
+  int64 last_heartbeat = 4;
+  float network_latency = 5; // New field for proximity scoring
+}
+
+enum Priority {
+  LOW = 0;
+  MODERATE = 1;
+  URGENT = 2;
+}
