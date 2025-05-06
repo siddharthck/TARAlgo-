@@ -8,8 +8,8 @@ grpc::Status TARServiceImpl::RouteTask(grpc::ServerContext*,
                                        const tar::RouteTaskRequest* request,
                                        tar::RouteTaskResponse* response) {
     if (!request) {
-        return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "Null request");
-    }
+return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "Null request");
+}
 
     // Log the incoming task details
     std::cout << "[Server] Received RouteTask request:" << std::endl;
@@ -35,8 +35,8 @@ grpc::Status TARServiceImpl::AcknowledgeTask(grpc::ServerContext*,
                                              const tar::TaskAck* request,
                                              tar::TaskAck* response) {
     if (!request) {
-        return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "Null request");
-    }
+return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "Null request");
+}
 
     // Log the acknowledgment details
     std::cout << "[Server] Received AcknowledgeTask request:" << std::endl;
@@ -57,8 +57,8 @@ grpc::Status TARServiceImpl::Heartbeat(grpc::ServerContext*,
                                        const tar::ServerMetrics* request,
                                        tar::ServerMetrics* response) {
     if (!request) {
-        return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "Null request");
-    }
+return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "Null request");
+}
 
     // Log the heartbeat details
     std::cout << "[Server] Received Heartbeat from: " << request->server_id() << std::endl;
@@ -79,15 +79,15 @@ grpc::Status TARServiceImpl::RequestTaskTransfer(grpc::ServerContext*,
                                                  const tar::ServerMetrics* request,
                                                  tar::Task* response) {
     if (!request) {
-        return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "Null request");
-    }
+return grpc::Status(grpc::StatusCode::INVALID_ARGUMENT, "Null request");
+}
 
     // Log the task transfer request
     std::cout << "[Server] Received RequestTaskTransfer from: " << request->server_id() << std::endl;
 
     auto task_opt = algorithm_.requestTaskTransfer(*request);
     if (!task_opt.has_value()) {
-        std::cout << "[Server] No task available for transfer to: " << request->server_id() << std::endl;
+std::cout << "[Server] No task available for transfer to: " << request->server_id() << std::endl;
         return grpc::Status(grpc::StatusCode::NOT_FOUND, "No task available");
     }
 
@@ -98,4 +98,12 @@ grpc::Status TARServiceImpl::RequestTaskTransfer(grpc::ServerContext*,
     std::cout << "  Task ID: " << response->id() << std::endl;
 
     return grpc::Status::OK;
+}
+
+void TARServiceImpl::addTaskToQueue(const tar::Task& task) {
+    algorithm_.addTaskToQueue(task);
+}
+
+void TARServiceImpl::updateServerMetrics(const tar::ServerMetrics& metrics) {
+    algorithm_.updateServerMetrics(metrics);
 }

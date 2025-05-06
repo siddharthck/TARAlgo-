@@ -32,10 +32,18 @@ public:
         return task_queue_.size();
     }
 
+    // Add task to queue
+    void addTaskToQueue(const tar::Task& task);
+
+    // New methods for leader election
+    std::string electLeader();
+    std::string getCurrentLeader() const;
+
 private:
     std::string self_id_;
     std::vector<std::string> peers_;
     std::map<std::string, tar::ServerMetrics> peer_metrics_;
     std::map<std::string, tar::Task> task_queue_;
     mutable std::mutex mutex_;
+    std::string current_leader_; // Store the current leader
 };

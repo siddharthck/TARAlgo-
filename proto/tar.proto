@@ -15,6 +15,7 @@ message Task {
   Priority priority = 3;
   int64 timestamp = 4; // Task creation time
   int64 deadline = 5;  // Optional deadline for the task
+  int32 hop_count = 6; // New field to track the number of hops
 }
 
 message RouteTaskRequest {

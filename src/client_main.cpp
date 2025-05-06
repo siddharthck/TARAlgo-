@@ -28,6 +28,7 @@ public:
         task->set_payload("payload_" + task_id);
         task->set_priority(priority);
         task->set_timestamp(std::chrono::system_clock::now().time_since_epoch().count());
+        task->set_hop_count(0); // Initialize hop count to 0
 
         tar::ServerMetrics* metrics = request.mutable_requester_metrics();
         metrics->set_server_id("test_client");

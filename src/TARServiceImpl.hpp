@@ -30,6 +30,13 @@ public:
         return algorithm_.getTaskQueueLength();
     }
 
+    void addTaskToQueue(const tar::Task& task);
+
+    // Add this method to update server metrics
+    void updateServerMetrics(const tar::ServerMetrics& metrics);
+
+    TARAlgorithm& getAlgorithm() { return algorithm_; } // Expose algorithm
+
 private:
     TARAlgorithm algorithm_;
 };
